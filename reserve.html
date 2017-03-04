@@ -1,0 +1,92 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Restaurant</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+ <script src="https://code.jquery.com/jquery.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1><span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+            <hr>
+            <h2>Make your reservation</h2>
+            <br>
+            <a href="tables">
+                <button type = "button" class = "btn btn-primary btn-lg"><span class="glyphicon glyphicon-list-alt"></span> View Tables</button>
+            </a>
+            <a href="/">
+                <button type = "button" class = "btn btn-default btn-lg"><span class="glyphicon glyphicon-home"></span></button>
+            </a>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Table Reservation</strong></div>
+            <div class="panel-body"> 
+                <form>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                     <div class="form-group">
+                        <label for="ID">Unique ID</label>
+                        <input type="text" class="form-control" id="uniqueID">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-md" id="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p>
+                    <a href="/api/tables">API Table Link</a>
+                    |
+                    <a href="/api/wait">API Wait List</a>
+                </p>
+            </div>
+        </div>
+    </div>
+<script>
+
+   $("#submit").on("click", function(event) {
+     event.preventDefault();
+     var newCustomer = {
+       name: $("#name").val().trim(),
+       phoneNumber: $("#phoneNumber").val().trim(),
+       email: $("#email").val().trim(),
+       id: $("#uniqueID").val().trim()
+     };
+
+     // Post the newCharacter with /api/new, and console log data
+     $.post("/api/new", newCustomer)
+     .done(function(data) {
+       console.log(data);
+     });
+       $("#name").val("");
+       $("#phoneNumber").val("");
+       $("#email").val("");
+       $("#uniqueID").val("");
+   });
+
+   </script>
+
+
+
+</body>
+</html>
+
+

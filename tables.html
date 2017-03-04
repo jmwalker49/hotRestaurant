@@ -1,0 +1,136 @@
+
+<!doctype html>
+<html>
+<head>
+    <title>Restaurant</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+ <script src="https://code.jquery.com/jquery.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> 
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1><span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+            <hr>
+            <h2>Current Reservations and Waiting List</h2>
+            <br>
+            <a href="reserve">
+                <button type = "button" class = "btn btn-danger btn-lg"><span class="glyphicon glyphicon-credit-card"></span> Make Reservation</button>
+            </a>
+            <a href="/">
+                <button type = "button" class = "btn btn-default btn-lg"><span class="glyphicon glyphicon-home"></span></button>
+            </a>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Current Reservations</strong></div>
+            <div id="reservations" class="panel-body">  </div>
+        <div class="panel panel-default">
+            <div class="panel panel-heading"><strong>Waiting List</strong></div>
+            <div class="panel-body"> 
+            <div id="waitList" class="panel-body"> </div>
+            </div>      
+        </div>
+        <div class="footer">
+            <div class="container">
+                <p>
+                    <a href="#" id="clear">Clear Table</a> <!-- How do you clear the tables with this link? -->
+                    |
+                    <a href="/api/tables">API Table Link</a>
+                    |
+                    <a href="/api/wait">API Wait List</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+      // QUESTION: What does $.get do? What are the parameters it is expecting?
+
+      var currentURL = window.location.origin;
+
+     $.ajax({
+
+        url: currentURL + "/api/tables",
+        method: "GET"
+
+     }).done(function(data){
+        
+     if (data) {
+        for (var i = 0; i < data.length; i++){
+
+            var newdiv = $("<div>");
+
+            newdiv.append("<div>Name:" + data[i].name +  "</div>");
+            newdiv.append("<div>Phone:" + data[i].phone +  "</div>");
+            newdiv.append("<div>Email:" + data[i].email +  "</div>");
+            newdiv.append("<div>ID:" + data[i].id +  "</div><hr>");
+            $("#reservations").append(newdiv);
+
+        };
+
+
+       //   $("#stats").show();
+       //   $("#name").text(data.name);
+       //   $("#role").text(data.role);
+       //   $("#age").text(data.age);
+       //   $("#force-points").text(data.forcePoints);
+       //   console.log(data);
+       // }
+       // else {
+       //  console.log("No data");
+       }
+
+     });
+
+       $.ajax({
+
+        url: currentURL + "/api/wait",
+        method: "GET"
+
+     }).done(function(data){
+        console.log(data);
+
+    if (data) {
+        for (var i = 0; i < data.length; i++){
+
+            var newdiv = $("<div>");
+
+            newdiv.append("<div>Name:" + data[i].name +  "</div>");
+            newdiv.append("<div>Phone:" + data[i].phone +  "</div>");
+            newdiv.append("<div>Email:" + data[i].email +  "</div>");
+            newdiv.append("<div>ID:" + data[i].id +  "</div><hr>");
+            $("#waitList").append(newdiv);
+
+        };
+    };
+
+     });
+
+        $("#clear").on("click", function(event) {
+     event.preventDefault();
+     $("#reservations").html("");
+     $("#waitList").html("");
+    
+
+
+     // Post the newCharacter with /api/new, and console log data
+     $.post("/api/clear")
+     .done(function(data) {
+       console.log(data);
+
+     });
+     
+   });
+
+        
+
+    
+</script>
+
+</body>
+</html>
